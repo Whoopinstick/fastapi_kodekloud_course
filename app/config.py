@@ -11,11 +11,7 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int
     class Config:
         env_file = ".env"
+        case_sensitive = False
 
 
 settings = Settings()
-
-
-if __name__ == '__main__':
-    print(settings.database_password)
-
