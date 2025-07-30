@@ -116,3 +116,10 @@ ALTER TABLE IF EXISTS public.posts
 ####     secret_key: str
 #### then initialize and access with an instance like - settings = Settings()
 ####  blah = settings.secret_key
+
+
+## add votes to application
+### created model, schema, router, and import into main 
+
+
+## TODO: Test voting route and logic
