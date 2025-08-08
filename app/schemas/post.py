@@ -12,12 +12,14 @@ class PostResponse(BasePost):
     user_id: int
     user: UserResponse
 
+
+
 # response model for joining posts to votes
 # class PostVote(BasePost):
 #     Post: PostResponse
 #     votes: int
 
-
+# remove subclassing for debugging
 class PostVote(BaseModel):
     id: int
     title: str
@@ -26,6 +28,3 @@ class PostVote(BaseModel):
     user_id: int
     user: UserResponse
     votes: int
-
-    class Config:
-        from_attributes = True  # This allows Pydantic to work with SQLAlchemy models
