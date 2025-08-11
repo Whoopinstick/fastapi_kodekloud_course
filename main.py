@@ -7,7 +7,8 @@ from app.database import Base, engine
 from app.routers import posts_router, users_router, auth_router, vote_router
 
 # create database tables if they don't exist
-Base.metadata.create_all(bind=engine)
+# use Alembic to build database instead
+# Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 

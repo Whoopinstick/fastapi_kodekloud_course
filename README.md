@@ -131,6 +131,7 @@ blah = settings.secret_key
 
 
 ## SQL Migrations with Alembic
+#### https://alembic.sqlalchemy.org/en/latest/tutorial.html
 #### install alembic library
 #### alembic init <directoryName>  - init a directory
 #### import our SQLAlchemy Base into the alembic env.py file, like from app.database import Base
@@ -149,9 +150,3 @@ blah = settings.secret_key
 #### Uvicorn and Gunicorn - https://fastapi.tiangolo.com/deployment/server-workers/
 #### Proxy with Nginx Example - https://unit.nginx.org/howto/fastapi/
 #### Docker - https://fastapi.tiangolo.com/deployment/docker/
-
-
-## TODO: 
-## use Alembic to build all tables
-## remove the 'startup' option from sqlalchemy that would create tables
-
