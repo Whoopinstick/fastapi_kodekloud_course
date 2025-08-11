@@ -138,6 +138,7 @@ blah = settings.secret_key
 #### set alembic target_metadata = Base.metadata
 #### set env.py config.set_main_option() to override db connection from alembic.ini for the sqlalchemy_url
 #### then in the env.py override we can reference the connection string using environment variables
+#### updated main.py to run `alembic upgrade head` on application startup
 
 ## CORS Cross-Origin Resource Sharing
 #### blocked by default, add allowed origins
