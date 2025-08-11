@@ -1,16 +1,29 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 import uvicorn
 from starlette.middleware.cors import CORSMiddleware
+from alembic import command
+from alembic.config import Config
 
 # refactored into app module
-from app.database import Base, engine
+# from app.database import Base, engine
 from app.routers import posts_router, users_router, auth_router, vote_router
 
 # create database tables if they don't exist
 # use Alembic to build database instead
 # Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
+def run_migrations():
+    alembic_cfg = Config("alembic.ini")
+    command.upgrade(alembic_cfg, "head")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    run_migrations()
+    yield
+
+app = FastAPI(lifespan=lifespan)
+
 
 app.add_middleware(
     CORSMiddleware,
