@@ -151,3 +151,9 @@ blah = settings.secret_key
 #### Uvicorn and Gunicorn - https://fastapi.tiangolo.com/deployment/server-workers/
 #### Proxy with Nginx Example - https://unit.nginx.org/howto/fastapi/
 #### Docker - https://fastapi.tiangolo.com/deployment/docker/
+
+
+## Testing
+#### Pytest - https://docs.pytest.org/en/stable/
+#### uv add pytest
+#### run tests with `pytest` command or `python -m pytest` or `python -m pytest tests/*`
