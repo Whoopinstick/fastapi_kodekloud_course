@@ -116,15 +116,14 @@ ALTER TABLE IF EXISTS public.posts
 #### importing this library also imports python-dotenv
 #### set in this project in config.py
 #### example: 
-```from pydantic_settings import BaseSettings
+```
+from pydantic_settings import BaseSettings
 class Settings(BaseSettings): 
      database_password: str "Can set a default if needed"
      secret_key: str
 ```
 #### then initialize and access with an instance like - settings = Settings()
-```
-blah = settings.secret_key
-```
+`blah = settings.secret_key`
 
 ## added votes to application
 #### created model, schema, router, and import into main 
