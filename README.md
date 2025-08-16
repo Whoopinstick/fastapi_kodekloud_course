@@ -156,3 +156,9 @@ class Settings(BaseSettings):
 #### Pytest - https://docs.pytest.org/en/stable/
 #### uv add pytest
 #### run tests with `pytest` command or `python -m pytest` or `python -m pytest tests/*`
+#### use switches -v and -s for verbosity and show print statements
+#### use --disable-warnings to supress warnings
+#### stop on the first failed test -x
+#### FastAPI testing includes a package for testing `from fastapi.testclient import TestClient`
+#### works like the requests library
+
