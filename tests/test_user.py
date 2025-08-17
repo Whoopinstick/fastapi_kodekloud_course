@@ -1,3 +1,4 @@
+import pytest
 from fastapi.testclient import TestClient
 from main import app, lifespan
 from app.schemas import UserResponse
@@ -11,7 +12,7 @@ DB_URL = f"postgresql+psycopg://{settings.test_database_user}:{settings.test_dat
 engine = create_engine(DB_URL)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base.metadata.create_all(bind=engine)
+
 
 # get this instance instead of the base info
 def override_get_db():
@@ -23,9 +24,21 @@ def override_get_db():
 
 app.dependency_overrides[get_db] = override_get_db
 
-client = TestClient(app)
 
-def test_create_user():
+@pytest.fixture
+def client():
+    """
+    the yield lets me run code before running the tests, then code afterward
+    the end result is I can create the database fresh for each run of tests
+    """
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+    yield TestClient(app)
+    # can run code afterward too
+
+
+
+def test_create_user(client):
     # this will actually create an entry in the database
     response = client.post("/users", json={"email": "hello123@gmail.com", "password": "Password!23"})
     response_data = response.json()

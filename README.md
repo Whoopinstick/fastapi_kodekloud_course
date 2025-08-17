@@ -161,4 +161,6 @@ class Settings(BaseSettings):
 #### stop on the first failed test -x
 #### FastAPI testing includes a package for testing `from fastapi.testclient import TestClient`
 #### works like the requests library
-
+#### you can override dependencies (like to point tests to a different database) -
+#### `app.dependency_overrides[get_db] = override_get_db`
+#### add fixture with a `yield` to create/destroy database for each round of testing 
