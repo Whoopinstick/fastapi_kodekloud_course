@@ -1,41 +1,5 @@
-import pytest
-from fastapi.testclient import TestClient
-from main import app, lifespan
+from tests.database import session, client
 from app.schemas import UserResponse
-from app.config import settings
-from app.database import get_db, Base
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
-
-DB_URL = f"postgresql+psycopg://{settings.test_database_user}:{settings.test_database_password}@{settings.test_database_host}:{settings.test_database_port}/{settings.test_database_name}"
-engine = create_engine(DB_URL)
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-
-
-# get this instance instead of the base info
-def override_get_db():
-    db = TestingSessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-app.dependency_overrides[get_db] = override_get_db
-
-
-@pytest.fixture
-def client():
-    """
-    the yield lets me run code before running the tests, then code afterward
-    the end result is I can create the database fresh for each run of tests
-    """
-    Base.metadata.drop_all(bind=engine)
-    Base.metadata.create_all(bind=engine)
-    yield TestClient(app)
-    # can run code afterward too
-
 
 
 def test_create_user(client):
