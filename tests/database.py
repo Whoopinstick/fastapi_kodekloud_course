@@ -11,7 +11,10 @@ engine = create_engine(DB_URL)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
-@pytest.fixture
+# you could change fixture scope so the database isn't destroyed after each test/function
+# maybe not a best practice
+# default scope is function
+@pytest.fixture(scope="function")
 def session():
     db = TestingSessionLocal()
     Base.metadata.drop_all(bind=engine)
