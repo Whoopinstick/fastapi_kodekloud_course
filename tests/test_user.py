@@ -1,19 +1,9 @@
 import pytest
 import jwt
-from jwt.exceptions import InvalidTokenError
-from tests.database import session, client
+# import no longer needed, moved to conftest
+# from tests.database import session, client
 from app.schemas import UserResponse, Token
 from app.config import settings
-
-# create user fixture to be passed into other tests
-@pytest.fixture()
-def test_user(client):
-    user_data = {"email": "hello@gmail.com", "password": "Password!23"}
-    response = client.post("/users", json=user_data)
-    assert response.status_code == 201
-    new_user = response.json()
-    new_user["password"] = user_data["password"]
-    return new_user
 
 
 
