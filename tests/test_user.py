@@ -6,7 +6,6 @@ from app.schemas import UserResponse, Token
 from app.config import settings
 
 
-
 def test_create_user(client):
     # this will actually create an entry in the database
     response = client.post("/users", json={"email": "hello123@gmail.com", "password": "Password!23"})
@@ -18,6 +17,7 @@ def test_create_user(client):
     print(new_user.email)
     assert new_user.email == "hello123@gmail.com"
     assert response.status_code == 201
+
 
 # update test to use test_user fixture, so it's not dependent on test_create_user function
 def test_login_user(client, test_user):
@@ -38,3 +38,25 @@ def test_login_user(client, test_user):
     assert user_id_from_token == test_user["id"]
     assert response_token.token_type == "bearer"
     assert response.status_code == 200
+
+
+# add multiple tests for failed login instead using parameterize
+# def test_failed_login(client, test_user):
+#     response = client.post("/auth/login", data={"username": test_user['email'], "password": "TheWrongP@ssword"})
+#     response_data = response.json()
+#     print(response_data.get("detail"))
+#     assert response.status_code == 403
+#     assert response_data.get("detail") == "Invalid credentials"
+
+
+# "hello@gmail.com", "password": "Password!23"}
+@pytest.mark.parametrize("email, password, status_code", [
+    ("hello1@gmail.com", "Password!23", 403), # wrong email
+    ("hello@gmail.com", "TheWrongP@assword", 403), # wrong password
+    ("hello1@gmail.com", "TheWrongP@assword", 403), # wrong email and wrong password
+    (None, "Password!23", 403), # no email
+    ("hello@gmail.com", None, 403), # no password
+    ])
+def test_failed_login(client, test_user, email, password, status_code):
+    response = client.post("/auth/login", data={"username": email, "password": password})
+    assert response.status_code == status_code
