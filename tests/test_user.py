@@ -49,7 +49,6 @@ def test_login_user(client, test_user):
 #     assert response_data.get("detail") == "Invalid credentials"
 
 
-# "hello@gmail.com", "password": "Password!23"}
 @pytest.mark.parametrize("email, password, status_code", [
     ("hello1@gmail.com", "Password!23", 403), # wrong email
     ("hello@gmail.com", "TheWrongP@assword", 403), # wrong password
