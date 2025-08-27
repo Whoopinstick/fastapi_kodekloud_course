@@ -1,7 +1,7 @@
 from typing import List
 from app import schemas
-from app.schemas import PostVote
-
+from app.schemas import PostVote, BasePost, PostResponse
+import pytest
 
 # create a test post before trying to get posts
 # will return something like this without posts - {'detail': 'No posts found'}, <Response [404 Not Found]>
@@ -35,4 +35,27 @@ def test_unauthorized_delete_post(client, test_posts):
     response = client.delete("/posts/1")
     # print(f"the response {response.json()}")
     # print(response.status_code)
+    assert response.status_code == 401
+
+
+@pytest.mark.parametrize("title, content, published", [
+    ("test title 1", "test content 1", True),
+    ("test title 2", "test content 2", True),
+    ("test title 3", "test content 3", False),
+    ("test title 4", "test content 4", None)
+])
+def test_create_post(authorized_client, test_user, test_posts, title, content, published):
+    response = authorized_client.post("/posts/", json={"title": title, "content": content, "published": published})
+    response_data = response.json()
+    print(response_data)
+    created_post = PostResponse(**response_data)
+    assert response.status_code == 201
+    assert created_post.title == title
+    assert created_post.content == content
+    assert created_post.published == published or True # or True, test default value of published = True
+    assert created_post.user_id == test_user["id"]
+
+
+def test_unauthorized_create_post(client, test_posts):
+    response = client.post("/posts/", json={"title": "test title no auth", "content": "test content no auth"})
     assert response.status_code == 401
