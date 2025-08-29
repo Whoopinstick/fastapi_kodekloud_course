@@ -1,6 +1,4 @@
-from typing import List
-from app import schemas
-from app.schemas import PostVote, BasePost, PostResponse
+from app.schemas import PostVote, PostResponse
 import pytest
 
 # create a test post before trying to get posts
@@ -26,16 +24,9 @@ def test_get_one_post(authorized_client, test_posts):
 
 def test_get_one_post_not_exist(authorized_client, test_posts):
     response = authorized_client.get("/posts/1000")
-    response_data = response.json()
+    # response_data = response.json()
     print(response.status_code)
     assert response.status_code == 404
-
-
-def test_unauthorized_delete_post(client, test_posts):
-    response = client.delete("/posts/1")
-    # print(f"the response {response.json()}")
-    # print(response.status_code)
-    assert response.status_code == 401
 
 
 @pytest.mark.parametrize("title, content, published", [
@@ -59,3 +50,20 @@ def test_create_post(authorized_client, test_user, test_posts, title, content, p
 def test_unauthorized_create_post(client, test_posts):
     response = client.post("/posts/", json={"title": "test title no auth", "content": "test content no auth"})
     assert response.status_code == 401
+
+
+def test_unauthorized_delete_post(client, test_user, test_posts):
+    response = client.delete("/posts/1")
+    assert response.status_code == 401
+
+
+def test_delete_post(authorized_client, test_user, test_posts):
+    response = authorized_client.delete("/posts/1")
+    assert response.status_code == 204
+
+
+def test_delete_other_user_post(authorized_client, test_user, test_posts):
+    response = authorized_client.delete("/posts/4")
+    assert response.status_code == 403
+
+

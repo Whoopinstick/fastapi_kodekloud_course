@@ -53,6 +53,16 @@ def test_user(client):
     return new_user
 
 
+@pytest.fixture()
+def test_user2(client):
+    user_data = {"email": "hello2@gmail.com", "password": "Password!23"}
+    response = client.post("/users", json=user_data)
+    assert response.status_code == 201
+    new_user = response.json()
+    new_user["password"] = user_data["password"]
+    return new_user
+
+
 # create a fixture to create a fake token to be used in various tests
 @pytest.fixture()
 def token(test_user):
@@ -72,7 +82,7 @@ def authorized_client(client, token):
 
 # create sample posts
 @pytest.fixture()
-def test_posts(test_user, session):
+def test_posts(test_user, session, test_user2):
     posts_data = [{
         "title": "first title",
         "content": "first content",
@@ -87,7 +97,13 @@ def test_posts(test_user, session):
             "title": "3rd title",
             "content": "3rd content",
             "user_id": test_user['id']
-    }]
+    },
+        {
+            "title": "4th title",
+            "content": "4th content, owned by test user 2",
+            "user_id": test_user2['id']
+    }
+    ]
 
     # map post data to Post
     # def create_post_model(post):
