@@ -67,3 +67,43 @@ def test_delete_other_user_post(authorized_client, test_user, test_posts):
     assert response.status_code == 403
 
 
+def test_update_post(authorized_client, test_user, test_posts):
+    updated_post_data = {
+        "title": "updated title",
+        "content": "updated content"
+    }
+
+    response = authorized_client.put("/posts/1", json=updated_post_data)
+    response_data = response.json()
+    print(response.status_code)
+    print(response_data)
+
+    post_response = PostResponse(**response_data)
+    print(post_response)
+    print(test_user["email"])
+    assert test_user["email"] == post_response.user.email
+    assert updated_post_data["title"] == post_response.title
+    assert response.status_code == 200
+
+
+def test_update_other_user_post(authorized_client, test_user, test_user2, test_posts):
+    updated_post_data = {
+        "title": "updated title2",
+        "content": "updated content2"
+    }
+
+    response = authorized_client.put(f"/posts/4", json=updated_post_data)
+    response_data = response.json()
+    print(response.status_code)
+    print(response_data)
+    assert response.status_code == 403
+
+
+def test_unauthorized_update_post(client, test_posts):
+    response = client.put("/posts/1", json={"title": "test title no auth", "content": "test content no auth"})
+    assert response.status_code == 401
+
+
+def test_update_post_not_exist(authorized_client, test_posts):
+    response = authorized_client.put("/posts/10000", json={"title": "test title no auth", "content": "test content no auth"})
+    assert response.status_code == 404
