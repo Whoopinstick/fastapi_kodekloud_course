@@ -1,0 +1,13 @@
+name: Build and Test Code
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Say Hi
+        run: echo "hi"
+
