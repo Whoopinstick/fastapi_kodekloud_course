@@ -8,6 +8,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Say Hi
+      - name: say hi
         run: echo "hi"
 
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.13"
+
+      - name: check python version
+        run: python3 --version
