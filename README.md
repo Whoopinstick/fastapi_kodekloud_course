@@ -164,3 +164,10 @@ class Settings(BaseSettings):
 #### you can override dependencies (like to point tests to a different database) -
 #### `app.dependency_overrides[get_db] = override_get_db`
 #### add fixture with a `yield` to create/destroy database for each round of testing 
+
+
+## CICD
+#### GitHub Actions - https://docs.github.com/en/actions
+#### Add a .github/workflows directory project
+#### and .yml files to the directory to perform actions on commit/push/PR/etc
+#### docker build/push action - https://github.com/marketplace/actions/build-and-push-docker-images
