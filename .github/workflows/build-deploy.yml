@@ -65,4 +65,4 @@ jobs:
       - name: run tests
         run: |
           pip install pytest
-          python -m pytest -s -x --disable-warnings test
+          python -m pytest -s -x --disable-warnings tests
