@@ -79,8 +79,13 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Set env variable for short commit hash
+        run: echo "SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: whoopinstick/kodekloud_fastapi:latest
+          tags: |
+            whoopinstick/kodekloud_fastapi:${{ env.SHORT_SHA }}
+            whoopinstick/kodekloud_fastapi:latest
